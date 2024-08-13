@@ -1,4 +1,5 @@
 #!/bin/bash
+username=$USER
 apt -y upgrade
 apt -y install python3.10
 snap install code --classic
