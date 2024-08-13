@@ -5,6 +5,8 @@ snap install code --classic
 apt -y install python3-pip
 pip install torch
 apt -y install swig
-pip install box2d
 apt -y install git
-pip install matplotlib
+pip install matplotlibpip
+pip install gymnasium
+pip install gymnasium[box2d]
+pip install gymnasium[classic-control]
