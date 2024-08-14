@@ -6,14 +6,14 @@ username=$(logname)
 # some lines are ran with sudo -u $username -
 # This is because pip does not like being ran with sudo permissions -
 # But apt requires it
-if[ -z $1]
+if[ -z $1 ]
  then
     install_gym()
     install_ros2()
-elif [ $1 = "--just-gym"]
+elif [ $1 = "--just-gym" ]
  then
      install_gym()
-elif [$1 = "--just-ros2"]
+elif [$1 = "--just-ros2" ]
  then
     install_ros2()
     sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
