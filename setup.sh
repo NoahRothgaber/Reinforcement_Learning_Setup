@@ -14,13 +14,6 @@ install_gym() {
     apt -y install swig git terminator
     # Great terminal windowing tool, allows for splitting of terminal windows easily        
     sudo -u $username pip install matplotlib gymnasium gymnasium[box2d] gymnasium[classic-control]
-    
-    cd /home/$username
-    # If you wish, comment out these next three lines if you don't want to test
-    # These lines grab one of my repos for the rainbow DQN and train it
-    # This shows that the environments work etc... but isn't necessary
-    sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
-    cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
 }
 
 install_ros2(){
@@ -50,6 +43,12 @@ if [ -z "$1" ]; then
     snap install code --classic
     install_gym
     install_ros2
+    # If you wish, comment out these next three lines if you don't want to test
+    # These lines grab one of my repos for the rainbow DQN and train it
+    # This shows that the environments work etc... but isn't necessary
+    cd /home/$username
+    sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
+    cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
     sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
     sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
     sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
@@ -58,6 +57,12 @@ elif [ "$1" = "--just-gym" ]; then
     sleep 2
     snap install code --classic
     install_gym
+        # If you wish, comment out these next three lines if you don't want to test
+    # These lines grab one of my repos for the rainbow DQN and train it
+    # This shows that the environments work etc... but isn't necessary
+    sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
+    cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
+    sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
     sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
 elif [ "$1" = "--just-ros2" ]; then
     echo "Only installing ros2 humble!"
