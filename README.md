@@ -29,3 +29,5 @@ sudo ./setup.sh --just-gym
 
 To install just ros2 humble, the command is  
 sudo ./setup.sh --just-ros2  
+
+![image](https://github.com/user-attachments/assets/e2f7b9e0-8c30-4e8a-8b8e-fb13832768a3)
