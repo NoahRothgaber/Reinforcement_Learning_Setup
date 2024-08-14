@@ -42,6 +42,8 @@ install_ros2(){
     apt -y upgrade
     apt -y install ros-humble-desktop ros-dev-tools
     source /opt/ros/humble/setup.bash
+    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
+    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
 }
 
 # Main script logic
@@ -61,8 +63,6 @@ elif [ "$1" = "--just-ros2" ]; then
     sleep 2
     snap install code --classic
     install_ros2
-    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
-    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
 else
     echo "The optional arguments are --just-gym and --just-ros2, you can install both by just running the script with no positional arguments. <sudo ./setup.sh>"
 fi
