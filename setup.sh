@@ -27,7 +27,6 @@ cd /home/$username
 sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
 cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
 # runs agent training in a separate terminator window so we can show ros2 and gym are both working. 
-sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'"
 # ros 2 section begins
 # commands taken from https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
 apt -y install locales
@@ -44,6 +43,6 @@ apt -y update
 apt -y upgrade
 apt -y install ros-humble-desktop
 apt -y install ros-dev-tools
-source /opt/ros/humble/setup.bash
+source /opt/ros/humble/setup.bashsudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'"
 sudo -u $username terminator -e "bash -c 'ros2 run demo_nodes_cpp talker; exec bash'"
 sudo -u $username terminator -e "bash -c 'ros2 run demo_nodes_cpp listener; exec bash'"
