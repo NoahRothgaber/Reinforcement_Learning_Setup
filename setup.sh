@@ -36,6 +36,17 @@ install_ros2(){
     source /opt/ros/humble/setup.bash
 }
 
+test_ros2(){
+    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
+    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
+}
+
+test_gym(){
+    cd /home/$username
+    sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
+    cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
+    sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
+}
 # Main script logic
 if [ -z "$1" ]; then
     echo "Installing gymnasium and ros2 humble."
@@ -43,34 +54,23 @@ if [ -z "$1" ]; then
     snap install code --classic
     install_gym
     install_ros2
-    # If you wish, comment out these next three lines if you don't want to test
-    # These lines grab one of my repos for the rainbow DQN and train it
-    # This shows that the environments work etc... but isn't necessary
-    cd /home/$username
-    sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
-    cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
-    sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
-    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
-    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
+    # If you wish, comment out these next 2 lines if you don't want to test
+    test_gym
+    test_ros2
 elif [ "$1" = "--just-gym" ]; then
     echo "Only installing gymnasium!"
     sleep 2
     snap install code --classic
     install_gym
-        # If you wish, comment out these next three lines if you don't want to test
-    # These lines grab one of my repos for the rainbow DQN and train it
-    # This shows that the environments work etc... but isn't necessary
-    sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
-    cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
-    sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
-    sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
+    # If you wish, comment out this next line if you don't want to test
+    test_gym
 elif [ "$1" = "--just-ros2" ]; then
     echo "Only installing ros2 humble!"
     sleep 2
     snap install code --classic
     install_ros2
-    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
-    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
+    # If you wish, comment out this next line if you don't want to test
+    test_ros2
 else
     echo "The optional arguments are --just-gym and --just-ros2, you can install both by just running the script with no positional arguments. <sudo ./setup.sh>"
 fi
