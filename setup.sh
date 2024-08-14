@@ -9,7 +9,6 @@ install_gym() {
     apt -y upgrade
     apt -y update # normally shouldn't be required but one pc had issues and liked update over upgrade
     apt -y install python3.10
-    snap install code --classic
     apt -y install python3-pip
     sudo -u $username pip install torch
     apt -y install swig git terminator
@@ -47,14 +46,23 @@ install_ros2(){
 
 # Main script logic
 if [ -z "$1" ]; then
+    echo "Installing gymnasium and ros2 humble."
+    sleep 2
+    snap install code --classic
     install_gym
     install_ros2
 elif [ "$1" = "--just-gym" ]; then
+    echo "Only installing gymnasium!"
+    sleep 2
+    snap install code --classic
     install_gym
 elif [ "$1" = "--just-ros2" ]; then
+    echo "Only installing ros2 humble!"
+    sleep 2
+    snap install code --classic
     install_ros2
     sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
     sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
 else
-    echo "The optional arguments are --just-gym and --just-ros2, you can install both by just running the script"
+    echo "The optional arguments are --just-gym and --just-ros2, you can install both by just running the script with no positional arguments. <sudo ./setup.sh>"
 fi
