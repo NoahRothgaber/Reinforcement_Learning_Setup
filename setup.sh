@@ -6,7 +6,24 @@ username=$(logname)
 # some lines are ran with sudo -u $username -
 # This is because pip does not like being ran with sudo permissions -
 # But apt requires it
-apt -y upgrade
+if[ -z $1];
+ then
+    install_gym()
+    install_ros2()
+elif [ $1 = "--just-gym"];
+ then
+     install_gym()
+elif [$1 = "--just-ros2"];
+ then
+    install_ros2()
+    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
+    sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
+else
+    echo "The optional arguments are --just-gym and --just-ros2, you can install both by just running the script"
+fi
+
+install_gym() {
+    pt -y upgrade
 apt -y update #normally shouldn't be required but one pc had issues and liked update over upgrade
 apt -y install python3.10
 snap install code --classic
@@ -26,6 +43,10 @@ cd /home/$username
 # This shows that the environments work etc... but isn't necessary
 sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
 cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
+sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
+}
+
+install_ros2(){
 # runs agent training in a separate terminator window so we can show ros2 and gym are both working. 
 # ros 2 section begins
 # commands taken from https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
@@ -44,6 +65,4 @@ apt -y upgrade
 apt -y install ros-humble-desktop
 apt -y install ros-dev-tools
 source /opt/ros/humble/setup.bash
-sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'" &
-sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'" &
-sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'" &
+}
