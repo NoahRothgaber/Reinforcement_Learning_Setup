@@ -43,6 +43,9 @@ apt -y update
 apt -y upgrade
 apt -y install ros-humble-desktop
 apt -y install ros-dev-tools
-source /opt/ros/humble/setup.bashsudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'"
-sudo -u $username terminator -e "bash -c 'ros2 run demo_nodes_cpp talker; exec bash'"
-sudo -u $username terminator -e "bash -c 'ros2 run demo_nodes_cpp listener; exec bash'"
+source /opt/ros/humble/setup.bash
+sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'"
+sleep 2
+sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker; exec bash'"
+sleep 2
+sudo -u $username terminator -e "bash -c 'source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener; exec bash'"
