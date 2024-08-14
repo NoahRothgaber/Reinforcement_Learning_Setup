@@ -7,7 +7,7 @@ Numpy and MatPlotLib
 Ros2 Humble  
 Pytorch
 Swig (gym dependency)  
-Terminator (Terminal Multiplexer)
+Terminator (Terminal Multiplexer)  
 Pygame
 
 To use the script, clone this repository using the following command   
