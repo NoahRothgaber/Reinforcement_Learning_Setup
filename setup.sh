@@ -6,6 +6,7 @@ username=$(logname)
 # This is because pip does not like being ran with sudo permissions -
 # But apt requires it
 apt -y upgrade
+apt -y update #normally shouldn't be required but one pc had issues and liked update over upgrade
 apt -y install python3.10
 snap install code --classic
 apt -y install python3-pip
