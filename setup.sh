@@ -1,6 +1,7 @@
 #!/bin/bash
 # Created by Noah Rothgaber 8/13/2024
 # Setup Gymnasium, VsCode, Git, and Terminator, ros2 coming soon...
+# Ros 2 Humble Setup
 username=$(logname)
 # some lines are ran with sudo -u $username -
 # This is because pip does not like being ran with sudo permissions -
@@ -25,4 +26,24 @@ cd /home/$username
 # This shows that the environments work etc... but isn't necessary
 sudo -u $username git clone -b categorical https://github.com/NoahRothgaber/reinforcement_learning
 cd /home/$username/reinforcement_learning/rainbow_dqn_pytorch/
-sudo -u $username python3 agent.py cartpole1 --train
+# runs agent training in a separate terminator window so we can show ros2 and gym are both working. 
+sudo -u $username terminator -e "bash -c 'python3 agent.py cartpole1 --train; exec bash'"
+# ros 2 section begins
+# commands taken from https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
+apt -y install locales
+locale-gen en_US en_US.UTF-8
+update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+apt -y install software-properties-common
+# next line looks strange but, it's just automating the "ENTER" press requried for the command to run
+yes | add-apt-repository universe
+apt update && apt -y install curl
+curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+apt -y update
+apt -y upgrade
+apt -y install ros-humble-desktop
+apt -y install ros-dev-tools
+source /opt/ros/humble/setup.bash
+sudo -u $username terminator -e "bash -c 'ros2 run demo_nodes_cpp talker; exec bash'"
+sudo -u $username terminator -e "bash -c 'ros2 run demo_nodes_cpp listener; exec bash'"
