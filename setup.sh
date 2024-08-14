@@ -6,6 +6,7 @@ username=$(logname)
 # some lines are ran with sudo -u $username -
 # This is because pip does not like being ran with sudo permissions -
 # But apt requires it
+# optional flags are --just-gym and --just-ros2 to specify installations.
 if[ -z $1 ]
  then
     install_gym()
